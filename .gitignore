@@ -1,0 +1,6 @@
+DS_STORE
+.idea/
+2.0/
+
+TestReport-check_config.bats.xml
+logs/

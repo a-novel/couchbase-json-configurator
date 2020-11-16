@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  divan-test:
+    container_name: divan-test
+    build:
+      context: .
+      dockerfile: Dockerfile.development
+    ports:
+      - '8091-8096:8091-8096'
+      - '11210-11211:11210-11211'
