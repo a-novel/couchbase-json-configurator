@@ -42,7 +42,7 @@ to ensure it will match your needs and use case.
 
 ### Development
 
-Couchbase is a demanding system when it comes to RAM. They provide a nice [documentation about system requirements](
+Couchbase is a demanding system when it comes to RAM. They provide a [documentation about system requirements](
 https://docs.couchbase.com/server/current/install/pre-install.html
 ).
 
