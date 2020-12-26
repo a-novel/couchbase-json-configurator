@@ -32,3 +32,11 @@ func Init() *errors.Error {
 	inited = true
 	return nil
 }
+
+func Cli() *client.Client {
+	return cli
+}
+
+func Ctx() context.Context {
+	return ctx
+}
