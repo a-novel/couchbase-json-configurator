@@ -68,7 +68,7 @@ preferences to change this setting.
 For development, the minimal configuration for Divan to run is given below:
 
 ```yaml
-version: '3.8'
+version: '3.9'
 services:
   db:
     image: kushuh/divan:1.0.0
@@ -89,7 +89,7 @@ environments.
 ## Securing your cluster
 
 ```yaml
-version: '3.8'
+version: '3.9'
 services:
   db:
     image: kushuh/divan:1.0.0
@@ -145,6 +145,8 @@ Read more at the [cut features](#cut-couchbase-options) section.
 
 Divan automatically perform the setup you usually do through UI or cli, by allowing you to pass a single .json for the
 entire setup.
+
+Your configuration file must be named `config.json`.
 
 ```json5
 {
@@ -270,7 +272,7 @@ ramSize should be at least `1024`. \
 indexRamSize should be at least `256`. \
 ftsRamSize should be at least `256` *(`2048` and above recommended)*.
 
-Also note that purgeInterval, as defined globally for couchbase clusters, should be a number between `0.04` and `60`.
+Also note that purgeInterval should be a number between `0.04` and `60`.
 
 #### About automatic allocation
 
