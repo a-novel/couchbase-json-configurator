@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-func kill (id string) error {
+func kill(id string) error {
 	if err := cli.ContainerKill(ctx, id, ""); err != nil {
 		return fmt.Errorf("unable to kill container : %s", err.Error())
 	}

@@ -11,10 +11,10 @@ import (
 )
 
 type ContainerOptions struct {
-	Name string `json:"name"`
-	Version string `json:"version"`
-	DisableDataConsistency bool `json:"ephemeral"`
-	VolumeName string `json:"volume_name"`
+	Name                   string `json:"name"`
+	Version                string `json:"version"`
+	DisableDataConsistency bool   `json:"ephemeral"`
+	VolumeName             string `json:"volume_name"`
 }
 
 func Create(configPath string, options *ContainerOptions) (string, *errors.Error) {
@@ -49,14 +49,14 @@ func Create(configPath string, options *ContainerOptions) (string, *errors.Error
 		fmt.Printf("cannot print docker logs : %s", err.Error())
 	}
 
-	ports, err2 := PortMapper("8091-8096", "11210-11211")
+	ports, err2 := PortMapper("8091-8096:8091-8096", "11210-11211:11210-11211")
 	if err2 != nil {
 		return "", err2
 	}
 
 	volumes := []mount.Mount{
 		{
-			Type: mount.TypeBind,
+			Type:   mount.TypeBind,
 			Source: configPath,
 			Target: "/root/DIVAN-config",
 		},
@@ -64,7 +64,7 @@ func Create(configPath string, options *ContainerOptions) (string, *errors.Error
 
 	if !options.DisableDataConsistency {
 		volumes = append(volumes, mount.Mount{
-			Type: mount.TypeVolume,
+			Type:   mount.TypeVolume,
 			Source: options.VolumeName,
 			Target: "/opt/couchbase/var",
 		})
@@ -75,7 +75,7 @@ func Create(configPath string, options *ContainerOptions) (string, *errors.Error
 		Image: image,
 	}, &container.HostConfig{
 		PortBindings: ports,
-		Mounts: volumes,
+		Mounts:       volumes,
 	}, nil, nil, options.Name)
 	if err != nil {
 		return "", errors.New(ErrCannotRunDocker, err.Error())
