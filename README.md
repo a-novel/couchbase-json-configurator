@@ -5,7 +5,7 @@ https://hub.docker.com/_/couchbase?tab=description&page=1&ordering=last_updated
 ), adding an automated configuration script that handles the whole setup with a single json file input, delivering a 
 ready-to-use and easily upgradable server instance.
 
-```cgo
+```bash
 docker pull kushuh/divan:latest
 ```
 
@@ -356,13 +356,13 @@ Divan Docker:
 Run the below command in any terminal, on a machine where **Docker is running**.
 
 *optional: create a volume to save your data (replace `$VOLUME_NAME` with whatever you want)*
-```cgo
+```bash
 docker volume create $VOLUME_NAME
 ```
 *replace `$CONTAINER_NAME` with whatever you want, `$CONFIG_PATH` with a path to your `config.json` file, and 
 `$VOLUME_NAME` with the name of an existing volume*
 
-```cgo
+```bash
 docker run -d --name $CONTAINER_NAME \
 -p '8091-8096:8091-8096' -p '11210-11211:11210-11211' \
 --mount source=$VOLUME_NAME,target=/opt/couchbase/var \
@@ -373,7 +373,7 @@ kushuh/divan:latest
 
 Or with no volumes:
 
-```cgo
+```bash
 docker run -d --name $CONTAINER_NAME \
 -p '8091-8096:8091-8096' -p '11210-11211:11210-11211' \
 --mount type=bind,source=$CONFIG_PATH,target=/root/DIVAN_config/config.json \
@@ -415,7 +415,7 @@ Then run your usual stuff.
 Container does not update automatically when the config file is updated. Instead, you can rely on the below command
 (change `$CONTAINER_NAME` by the name of your container):
 
-```cgo
+```bash
 docker exec "$CONTAINER_NAME" sh -c "cd /root/DIVAN_scripts && go run main.go"
 ```
 
