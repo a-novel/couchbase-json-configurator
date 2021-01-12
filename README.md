@@ -292,7 +292,7 @@ compaction are set, bucket level compaction will override the global compaction 
 <span id="compaction-annotation-1">**(1)**</span> At least one of both threshold should be set if a timeframe is given
 (`from` and `to` keys).
 
-<span id="compaction-annotation-1">**(2)**</span> A timeframe should be set (with at least 1 non zero parameter) if 
+<span id="compaction-annotation-2">**(2)**</span> A timeframe should be set (with at least 1 non zero parameter) if 
 `abortOutside` flag is set to `true`.
 
 ### Compaction Threshold (`threshold` and `viewThreshold`)
