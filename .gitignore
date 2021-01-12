@@ -1,6 +1,7 @@
 # macOS specifics.
 DS_STORE
 .idea/
+**/.idea
 
 # Test results.
 TestReport-check_config.bats.xml
