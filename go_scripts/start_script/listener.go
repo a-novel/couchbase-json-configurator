@@ -16,11 +16,11 @@ func StartListener() {
 	r.GET("/", func (c *gin.Context) {
 		switch status {
 		case StatusReady:
-			c.Data(200, "text/plain", []byte("cluster ready"))
+			c.JSON(200, gin.H{"message": "cluster ready"})
 		case StatusProcessing:
-			c.Data(102, "text/plain", []byte("processing cluster"))
+			c.JSON(102, gin.H{"message": "processing cluster"})
 		default:
-			c.Data(500, "text/plain", []byte(status))
+			c.JSON(500, gin.H{"message": status})
 		}
 	})
 
