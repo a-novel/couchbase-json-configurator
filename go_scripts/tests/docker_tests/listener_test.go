@@ -4,23 +4,34 @@ import (
 	"fmt"
 	"github.com/a-novel/divanDocker/tests/test_utils"
 	"github.com/a-novel/divanDocker/utils"
+	"io/ioutil"
 	"net/http"
 	"path"
 	"testing"
 	"time"
 )
 
-func get(u string) (*http.Response, error) {
+func get(u string) (string, int, error) {
 	req, err := http.NewRequest("GET", u, nil)
 	if err != nil {
-		return nil, err
+		return "", 0, err
 	}
 
 	req.Header.Set("Content-Type", "text/plain")
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
-	return resp, err
+
+	if resp != nil {
+		bd, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			return "", resp.StatusCode, err
+		}
+
+		return string(bd), resp.StatusCode, nil
+	} else {
+		return "", 0, nil
+	}
 }
 
 func TestListener(t *testing.T) {
@@ -48,19 +59,21 @@ func TestListener(t *testing.T) {
 	}
 	timer.End("container running")
 
+	var status int
+	var res string
+
 	timer = test_utils.Time("posting first request")
 	timer.Important = true
-	var res *http.Response
 	tx := time.Now().Second()
 	for (time.Now().Second() - tx) < 20 {
-		res, err = get("http://localhost:7777")
-		if err != nil || res != nil {
+		res, status, err = get("http://localhost:7777")
+		if err != nil || res != "" {
 			break
 		}
 	}
 	if err != nil {
 		timer.EndWithError(err.Error())
-	} else if res == nil {
+	} else if res == "" {
 		timer.EndWithError("cannot reach listener (timeout)")
 	}
 	timer.End("request successful")
@@ -69,17 +82,17 @@ func TestListener(t *testing.T) {
 	timer.Important = true
 	tx = time.Now().Second()
 	for (time.Now().Second() - tx) < 180 {
-		res, err = get("http://localhost:7777")
-		if err != nil || res.StatusCode != 102 {
+		res, status, err = get("http://localhost:7777")
+		if err != nil || status != 102 {
 			break
 		}
 	}
 	if err != nil {
 		timer.EndWithError(err.Error())
-	} else if res == nil {
+	} else if res == "" {
 		timer.EndWithError("listener not getting ready (timeout)")
-	} else if res.StatusCode != 200 {
-		timer.EndWithError(fmt.Sprintf("unexpected status code %v", res.StatusCode))
+	} else if status != 200 {
+		timer.EndWithError(fmt.Sprintf("unexpected status code %v", status))
 	}
 	timer.End("request successful")
 
