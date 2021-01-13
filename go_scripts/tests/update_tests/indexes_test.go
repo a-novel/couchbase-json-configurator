@@ -127,11 +127,11 @@ func TestBucketIndexesUpdate(t *testing.T) {
 				RamSize: 128,
 			},
 			"bucket_2": {
-				RamSize: 128,
+				RamSize:      128,
 				PrimaryIndex: "bucket_2-primary-index",
 			},
 			"bucket_3": {
-				RamSize: 128,
+				RamSize:      128,
 				PrimaryIndex: "bucket_3-primary-index",
 				Indexes: map[string]*index.Index{
 					"index-bucket_3-by-title": {
@@ -143,7 +143,7 @@ func TestBucketIndexesUpdate(t *testing.T) {
 				},
 			},
 			"bucket_4": {
-				RamSize: 128,
+				RamSize:      128,
 				PrimaryIndex: "bucket_4-primary-index",
 				Indexes: map[string]*index.Index{
 					"index-bucket_4-by-description": {
@@ -161,7 +161,7 @@ func TestBucketIndexesUpdate(t *testing.T) {
 
 	dconf.Buckets = map[string]*bucket.Bucket{
 		"bucket_1": {
-			RamSize: 128,
+			RamSize:      128,
 			PrimaryIndex: "bucket_1-primary-index",
 			Indexes: map[string]*index.Index{
 				"index-bucket_4-by-description": {
@@ -173,7 +173,7 @@ func TestBucketIndexesUpdate(t *testing.T) {
 			RamSize: 128,
 		},
 		"bucket_3": {
-			RamSize: 128,
+			RamSize:      128,
 			PrimaryIndex: "bucket_3-primary-index#",
 			Indexes: map[string]*index.Index{
 				"index-bucket_3-by-title": {

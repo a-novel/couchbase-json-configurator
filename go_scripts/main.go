@@ -7,6 +7,7 @@ import (
 
 func main() {
 	start_script.StartListener()
+	start_script.MarkAsProcessing()
 
 	if err := start_script.Start(false); err != nil {
 		start_script.MarkAsFaulty(err.Error())

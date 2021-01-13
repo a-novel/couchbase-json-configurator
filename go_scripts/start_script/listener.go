@@ -5,15 +5,20 @@ import (
 )
 
 var status string
+var r *gin.Engine
 
 const (
 	StatusProcessing = "status_processing"
-	StatusReady = "status_ready"
+	StatusReady      = "status_ready"
 )
 
 func StartListener() {
-	r := gin.Default()
-	r.GET("/", func (c *gin.Context) {
+	if r != nil {
+		return
+	}
+
+	r = gin.Default()
+	r.GET("/", func(c *gin.Context) {
 		switch status {
 		case StatusReady:
 			c.JSON(200, gin.H{"message": "cluster ready"})
@@ -25,6 +30,10 @@ func StartListener() {
 	})
 
 	r.Run(":7777")
+}
+
+func MarkAsProcessing() {
+	status = StatusProcessing
 }
 
 func MarkAsReady() {

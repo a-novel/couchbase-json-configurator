@@ -85,7 +85,7 @@ func TestBucketsUpdate(t *testing.T) {
 		},
 		Buckets: map[string]*bucket.Bucket{
 			"sample": {
-				RamSize:      512,
+				RamSize: 512,
 			},
 			"eph_sample": {
 				RamSize:        256,
@@ -110,7 +110,7 @@ func TestBucketsUpdate(t *testing.T) {
 
 	dconf.Buckets = map[string]*bucket.Bucket{
 		"sample": {
-			RamSize:      1024,
+			RamSize: 1024,
 		},
 		"eph_sample": {
 			RamSize:        512,
