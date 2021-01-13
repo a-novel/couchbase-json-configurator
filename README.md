@@ -45,8 +45,8 @@ Deploying a Couchbase cluster with Divan requires 2 simple steps, all detailed i
   - [Compaction abortOutside](#compaction-abortoutside)
 - [Parameters](#parameters)
 
-Settings are done using a standard json file. The file should be named `config.json`, and has to be passed to the
-instance through volumes (more details in the [section about running Docker image]).
+Settings are done using a standard json file. The file has to be passed to the instance through binded volumes (more 
+details in the [section about running Docker image]).
 
 An example config can be shown below.
 
@@ -120,8 +120,10 @@ from [Couchbase Server doc - Memory](https://docs.couchbase.com/server/current/l
 
 **ramSize**
 - Allocated Ram for the [data service](https://docs.couchbase.com/server/current/learn/services-and-indexes/services/data-service.html).
+
 **indexRamSize**
 - Allocated Ram for the [index service](https://docs.couchbase.com/server/current/learn/services-and-indexes/services/index-service.html).
+
 **ftsRamSize**
 - Allocated Ram for the [full text search service](https://docs.couchbase.com/server/current/learn/services-and-indexes/services/search-service.html).
 
