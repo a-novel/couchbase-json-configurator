@@ -11,16 +11,6 @@ import (
 )
 
 func Start(cancelSetup bool) *errors.Error {
-	cliPath, err2 := utils.SetCLIPath()
-	if err2 != nil {
-		return err2
-	}
-
-	err := os.Setenv("COUCHBASE_CLI_PATH", cliPath)
-	if err != nil {
-		return errors.New("unknown", err.Error())
-	}
-
 	configPath := os.Getenv("DIVAN_CONFIG")
 	var configData config.Config
 
@@ -30,6 +20,24 @@ func Start(cancelSetup bool) *errors.Error {
 	}
 
 	if err = json.Unmarshal(file, &configData); err != nil {
+		return errors.New("unknown", err.Error())
+	}
+
+	if err := StartWithConfig(&configData, cancelSetup); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func StartWithConfig(configData *config.Config, cancelSetup bool) *errors.Error {
+	cliPath, err2 := utils.SetCLIPath()
+	if err2 != nil {
+		return err2
+	}
+
+	err := os.Setenv("COUCHBASE_CLI_PATH", cliPath)
+	if err != nil {
 		return errors.New("unknown", err.Error())
 	}
 
