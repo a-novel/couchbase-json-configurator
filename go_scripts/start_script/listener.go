@@ -1,8 +1,7 @@
 package start_script
 
 import (
-	"log"
-	"net/http"
+	"github.com/gin-gonic/gin"
 )
 
 var status string
@@ -13,26 +12,19 @@ const (
 )
 
 func StartListener() {
-	http.HandleFunc("/", func (w http.ResponseWriter, r *http.Request) {
-		if stc, err := w.Write([]byte(status)); err != nil {
-			w.Write([]byte(err.Error()))
-			w.WriteHeader(stc)
-		} else {
-			switch status {
-			case StatusReady:
-				w.Write([]byte("cluster ready"))
-				w.WriteHeader(200)
-			case StatusProcessing:
-				w.Write([]byte("processing cluster"))
-				w.WriteHeader(102)
-			default:
-				w.Write([]byte(status))
-				w.WriteHeader(500)
-			}
+	r := gin.Default()
+	r.GET("/", func (c *gin.Context) {
+		switch status {
+		case StatusReady:
+			c.Data(200, "text/plain", []byte("cluster ready"))
+		case StatusProcessing:
+			c.Data(102, "text/plain", []byte("processing cluster"))
+		default:
+			c.Data(500, "text/plain", []byte(status))
 		}
 	})
 
-	log.Fatal(http.ListenAndServe(":7777", nil))
+	r.Run(":7777")
 }
 
 func MarkAsReady() {

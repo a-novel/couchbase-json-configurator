@@ -1,15 +1,16 @@
 package docker_tests
 
 import (
-	"os"
+	"fmt"
 	"path/filepath"
+	"runtime"
 )
 
 func getExecPath() (string, error) {
-	ex, err := os.Executable()
-	if err != nil {
-		return "", err
+	_, filename, _, ok := runtime.Caller(1)
+	if !ok {
+		return "", fmt.Errorf("cannot read current path")
 	}
 
-	return filepath.Dir(ex), nil
+	return filepath.Dir(filename), nil
 }

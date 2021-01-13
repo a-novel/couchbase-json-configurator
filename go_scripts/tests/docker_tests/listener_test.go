@@ -31,7 +31,7 @@ func TestListener(t *testing.T) {
 
 	timer := test_utils.Time("building image")
 	if _, err := utils.Command("sh", "-c", fmt.Sprintf(
-		"docker build -t kushuh/divan:local -f Dockerfile %s",
+		"cd \"%s\" && docker build -t kushuh/divan:local -f Dockerfile .",
 		path.Join(ePath, "../../../"),
 	)); err != nil {
 		timer.EndWithFatalError(err.Error(), t)
@@ -41,8 +41,7 @@ func TestListener(t *testing.T) {
 	timer = test_utils.Time("running container")
 	timer.Important = true
 	if _, err := utils.Command("sh", "-c", fmt.Sprintf(
-		"docker run -d --name divan-test -p '8091-8096:8091-8096' -p '11210-11211:11210-11211' " +
-			"--mount type=bind,source=%s,target=/root/DIVAN_config/config.json kushuh/divan:local",
+		"docker run -d --name divan-test -p '8091-8096:8091-8096' -p '11210-11211:11210-11211' -p '7777:7777' --mount type=bind,source=\"%s\",target=/root/DIVAN_config/config.json kushuh/divan:local",
 		path.Join(ePath, "configSample.json"),
 	)); err != nil {
 		timer.EndWithFatalError(err.Error(), t)
@@ -53,8 +52,11 @@ func TestListener(t *testing.T) {
 	timer.Important = true
 	var res *http.Response
 	tx := time.Now().Second()
-	for res, err = get("http://localhost:7777"); (time.Now().Second() - tx) < 20 && res == nil && err != nil; {
-		time.Sleep(time.Second)
+	for (time.Now().Second() - tx) < 20 {
+		res, err = get("http://localhost:7777")
+		if err != nil || res != nil {
+			break
+		}
 	}
 	if err != nil {
 		timer.EndWithError(err.Error())
@@ -66,8 +68,11 @@ func TestListener(t *testing.T) {
 	timer = test_utils.Time("posting second request")
 	timer.Important = true
 	tx = time.Now().Second()
-	for res, err = get("http://localhost:7777"); (time.Now().Second() - tx) < 180 && (res == nil || res.StatusCode == 102) && err != nil; {
-		time.Sleep(time.Second)
+	for (time.Now().Second() - tx) < 180 {
+		res, err = get("http://localhost:7777")
+		if err != nil || res.StatusCode != 102 {
+			break
+		}
 	}
 	if err != nil {
 		timer.EndWithError(err.Error())
