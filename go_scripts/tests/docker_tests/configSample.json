@@ -1,0 +1,16 @@
+{
+  "credentials": {
+    "username": "Administrator",
+    "password": "password"
+  },
+  "resources": {
+    "ramSize": 1024,
+    "ftsRamSize": 2048,
+    "indexRamSize": 1024
+  },
+  "buckets": {
+    "users": {
+      "ramSize": 256
+    }
+  }
+}

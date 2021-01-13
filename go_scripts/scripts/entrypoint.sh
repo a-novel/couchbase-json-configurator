@@ -13,7 +13,7 @@ echo "running configuration script..."
 
 cd "$DIVAN_SCRIPTS" || exit
 go get -u -v ./...
-go run main.go
+go run main.go &
 
 echo "configuration complete"
 echo "switching back couchbase service to foreground mode"

@@ -6,7 +6,12 @@ import (
 )
 
 func main() {
+	start_script.StartListener()
+
 	if err := start_script.Start(false); err != nil {
+		start_script.MarkAsFaulty(err.Error())
 		log.Fatal(err.Error())
+	} else {
+		start_script.MarkAsReady()
 	}
 }
