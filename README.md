@@ -240,6 +240,9 @@ this bucket indexes each document by `author` and `genre` keys:
 }
 ```
 
+Each index name should be unique across the cluster and also across primary indexes, only contain `A-Za-z` characters,
+with addition of `#`, `-` and `_`, and start with a letter.
+
 More examples can be found at [Couchbase documentation](https://docs.couchbase.com/server/current/learn/services-and-indexes/indexes/indexing-and-query-perf.html).
 
 ## Compaction
