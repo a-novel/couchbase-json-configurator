@@ -27,12 +27,12 @@ RUN mkdir $DIVAN_SCRIPTS
 RUN cd ~ && git clone -b master https://github.com/a-novel/divan-docker.git
 
 # Copy scripts.
-RUN cp -r ~/divan-docker/go_scripts/ $DIVAN_SCRIPTS/
+RUN cp -a ~/divan-docker/go_scripts/. $DIVAN_SCRIPTS/
 # Remove git folder.
 RUN rm -rf ~/divan-docker
 
 # Make config scripts executable.
-RUN chmod -R +rwx $DIVAN_SCRIPTS
-RUN chmod -R +rw /root/DIVAN_config
+RUN chmod -R +rx $DIVAN_SCRIPTS
+RUN chmod -R +r /root/DIVAN_config
 
 ENTRYPOINT [ "bash", "/root/DIVAN_scripts/scripts/entrypoint.sh" ]

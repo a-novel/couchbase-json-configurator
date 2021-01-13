@@ -1,0 +1,10 @@
+**/.idea
+**/.git
+
+./api
+
+.gitignore
+LICENSE
+README.md
+test.sh
+uninstall.sh
