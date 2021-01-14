@@ -20,8 +20,8 @@ func (c *Config) CleanIndexes() *errors.Error {
 	var err2 error
 	var res *gocb.QueryResult
 
-	timer := time.Now().Second()
-	for (time.Now().Second() - timer) < c.Parameters.Timeout {
+	timer := time.Now().UnixNano()
+	for (time.Now().UnixNano() - timer) < int64(c.Parameters.Timeout * 1000000000) {
 		res, err2 = cluster.Query("SELECT `indexes`.* FROM system:indexes", &gocb.QueryOptions{
 			Readonly: true,
 			Adhoc:    false,

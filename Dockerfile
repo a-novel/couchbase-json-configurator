@@ -35,4 +35,6 @@ RUN rm -rf ~/divan-docker
 RUN chmod -R +rx $DIVAN_SCRIPTS
 RUN chmod -R +r /root/DIVAN_config
 
+EXPOSE 7777
+
 ENTRYPOINT [ "bash", "/root/DIVAN_scripts/scripts/entrypoint.sh" ]

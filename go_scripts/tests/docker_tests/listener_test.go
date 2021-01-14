@@ -64,8 +64,8 @@ func TestListener(t *testing.T) {
 
 	timer = test_utils.Time("posting first request")
 	timer.Important = true
-	tx := time.Now().Second()
-	for (time.Now().Second() - tx) < 20 {
+	tx := time.Now().UnixNano()
+	for (time.Now().UnixNano() - tx) < 20 * 1000000000 {
 		res, status, err = get("http://localhost:7777")
 		if err != nil || res != "" {
 			break
@@ -80,8 +80,8 @@ func TestListener(t *testing.T) {
 
 	timer = test_utils.Time("posting second request")
 	timer.Important = true
-	tx = time.Now().Second()
-	for (time.Now().Second() - tx) < 180 {
+	tx = time.Now().UnixNano()
+	for (time.Now().UnixNano() - tx) < 180 * 1000000000 {
 		res, status, err = get("http://localhost:7777")
 		if err != nil || status != 102 {
 			break
