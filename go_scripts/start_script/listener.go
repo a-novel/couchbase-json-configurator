@@ -2,34 +2,38 @@ package start_script
 
 import (
 	"github.com/gin-gonic/gin"
+	"log"
 )
 
 var status string
-var r *gin.Engine
 
 const (
 	StatusProcessing = "status_processing"
 	StatusReady      = "status_ready"
 )
 
-func StartListener() {
-	if r != nil {
-		return
+func StatusHandler(c *gin.Context) {
+	switch GetStatus() {
+	case StatusReady:
+		c.JSON(200, gin.H{"message": "cluster ready"})
+	case StatusProcessing:
+		c.Writer.WriteHeader(102)
+	default:
+		c.JSON(500, gin.H{"message": GetStatus()})
 	}
 
-	r = gin.Default()
-	r.GET("/", func(c *gin.Context) {
-		switch status {
-		case StatusReady:
-			c.JSON(200, gin.H{"message": "cluster ready"})
-		case StatusProcessing:
-			c.JSON(102, gin.H{"message": "processing cluster"})
-		default:
-			c.JSON(500, gin.H{"message": status})
-		}
-	})
+	return
+}
 
-	r.Run(":7777")
+func StartListener() {
+	gin.SetMode(gin.ReleaseMode)
+	r := gin.Default()
+	r.GET("/divan_status", StatusHandler)
+	log.Fatal(r.Run("0.0.0.0:8080"))
+}
+
+func GetStatus() string {
+	return status
 }
 
 func MarkAsProcessing() {

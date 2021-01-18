@@ -12,7 +12,7 @@ func TestNonJSONFile(t *testing.T) {
 
 	timer := test_utils.Time("launching setup script (should fail with non JSON file)...")
 	timer.Important = true
-	if err := start_script.Start(true); err == nil {
+	if _, err := start_script.Start(true); err == nil {
 		timer.EndWithError("non json config file should return an error")
 	} else {
 		timer.End("script failed successfully with non JSON file")

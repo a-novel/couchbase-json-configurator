@@ -23,18 +23,13 @@ ENV PATH="${PATH}:/usr/local/go/bin"
 RUN mkdir /root/DIVAN_config
 RUN mkdir $DIVAN_SCRIPTS
 
-# Clone directory.
-RUN cd ~ && git clone -b master https://github.com/a-novel/divan-docker.git
-
 # Copy scripts.
-RUN cp -a ~/divan-docker/go_scripts/. $DIVAN_SCRIPTS/
-# Remove git folder.
-RUN rm -rf ~/divan-docker
+COPY ./go_scripts/ $DIVAN_SCRIPTS/
 
 # Make config scripts executable.
 RUN chmod -R +rx $DIVAN_SCRIPTS
 RUN chmod -R +r /root/DIVAN_config
 
-EXPOSE 6666
+EXPOSE 8091 8092 8093 8094 8095 8096 11207 11210 11211 18091 18092 18093 18094 18095 18096 8080
 
 ENTRYPOINT [ "bash", "/root/DIVAN_scripts/scripts/entrypoint.sh" ]

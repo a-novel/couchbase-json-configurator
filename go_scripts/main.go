@@ -2,17 +2,27 @@ package main
 
 import (
 	"github.com/a-novel/divanDocker/start_script"
-	"log"
+	"time"
 )
 
 func main() {
-	start_script.StartListener()
+	go start_script.StartListener()
 	start_script.MarkAsProcessing()
+	_, err := start_script.Start(false)
 
-	if err := start_script.Start(false); err != nil {
+	if err != nil {
 		start_script.MarkAsFaulty(err.Error())
-		log.Fatal(err.Error())
-	} else {
-		start_script.MarkAsReady()
+		return
 	}
+
+	start_script.MarkAsReady()
+
+	// Prevent status server from exiting.
+	done := make(chan bool)
+	go func() {
+		for {
+			time.Sleep(time.Second)
+		}
+	}()
+	<-done
 }

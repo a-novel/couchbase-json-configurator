@@ -10,24 +10,24 @@ import (
 	"os"
 )
 
-func Start(cancelSetup bool) *errors.Error {
+func Start(cancelSetup bool) (*config.Config, *errors.Error) {
 	configPath := os.Getenv("DIVAN_CONFIG")
 	var configData config.Config
 
 	file, err := ioutil.ReadFile(configPath)
 	if err != nil {
-		return errors.New("unknown", fmt.Sprintf("cannot read config file : %s", err.Error()))
+		return nil, errors.New("unknown", fmt.Sprintf("cannot read config file : %s", err.Error()))
 	}
 
 	if err = json.Unmarshal(file, &configData); err != nil {
-		return errors.New("unknown", err.Error())
+		return nil, errors.New("unknown", err.Error())
 	}
 
 	if err := StartWithConfig(&configData, cancelSetup); err != nil {
-		return err
+		return nil, err
 	}
 
-	return nil
+	return &configData, nil
 }
 
 func StartWithConfig(configData *config.Config, cancelSetup bool) *errors.Error {
@@ -63,7 +63,15 @@ func StartWithConfig(configData *config.Config, cancelSetup bool) *errors.Error 
 		return nil
 	}
 
-	if err := configData.Setup(); err != nil {
+	if err := configData.SetupCluster(); err != nil {
+		return err
+	}
+
+	if err := configData.CleanIndexes(); err != nil {
+		return err
+	}
+
+	if err := configData.SetupBuckets(); err != nil {
 		return err
 	}
 
