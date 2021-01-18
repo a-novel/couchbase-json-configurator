@@ -35,6 +35,6 @@ RUN rm -rf ~/divan-docker
 RUN chmod -R +rx $DIVAN_SCRIPTS
 RUN chmod -R +r /root/DIVAN_config
 
-EXPOSE 6666
+EXPOSE 8091 8092 8093 8094 8095 8096 11207 11210 11211 18091 18092 18093 18094 18095 18096 8080
 
 ENTRYPOINT [ "bash", "/root/DIVAN_scripts/scripts/entrypoint.sh" ]
