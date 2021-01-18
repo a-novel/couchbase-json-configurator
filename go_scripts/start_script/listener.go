@@ -17,7 +17,7 @@ func StatusHandler(c *gin.Context) {
 	case StatusReady:
 		c.JSON(200, gin.H{"message": "cluster ready"})
 	case StatusProcessing:
-		c.Writer.WriteHeader(102)
+		c.JSON(503, gin.H{"message": "cluster setup processing"})
 	default:
 		c.JSON(500, gin.H{"message": GetStatus()})
 	}
