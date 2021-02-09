@@ -347,6 +347,7 @@ An optional section to control the cluster setup.
 - [Start from docker cli](#start-from-docker-cli)
 - [Start with docker-compose](#start-with-docker-compose)
 - [Update a running instance](#update-a-running-instance)
+- [Mount with status checker](#mount-with-status-checker)
 
 Divan Docker has the same requirements as Couchbase Docker Image.
 
