@@ -12,10 +12,9 @@ func main() {
 
 	if err != nil {
 		start_script.MarkAsFaulty(err.Error())
-		return
+	} else {
+		start_script.MarkAsReady()
 	}
-
-	start_script.MarkAsReady()
 
 	// Prevent status server from exiting.
 	done := make(chan bool)
