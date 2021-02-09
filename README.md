@@ -24,6 +24,7 @@ docker pull kushuh/divan:latest
   - [Start from docker cli](#start-from-docker-cli)
   - [Start with docker-compose](#start-with-docker-compose)
   - [Update a running instance](#update-a-running-instance)
+  - [Mount with status checker](#mount-with-status-checker)
 - [License](#license)
 
 # Start using Divan Docker
@@ -415,6 +416,10 @@ Then run your usual stuff.
 > The current version DOES NOT support multi-nodes and thus won't work in swarm mode with size greater than 1. The
 > multi-node support is not planned before 3.0.
 
+> If you encounter an error where container runs but no cluster is setup, it may be related to the config file not
+> being mounted properly. To avoid this, use an absolute path to the host config file, or replace the `./` part with
+> `${PWD}/` (more information on [this stackoverflow post](https://stackoverflow.com/a/42260979/9021186)).
+
 ## Update a running instance
 
 Container does not update automatically when the config file is updated. Instead, you can rely on the below command
@@ -423,6 +428,44 @@ Container does not update automatically when the config file is updated. Instead
 ```bash
 docker exec "$CONTAINER_NAME" sh -c "cd /root/DIVAN_scripts && go run main.go"
 ```
+
+## Mount with status checker
+
+The current version of Divan provides an additional http server that returns the current status of the database setup.
+To enable this service, just open the `8080` port on the container.
+
+*With docker cli*
+```bash
+docker run -d --name $CONTAINER_NAME \
+-p '8091-8096:8091-8096' -p '11210-11211:11210-11211' -p '8080:8080' \
+--mount source=$VOLUME_NAME,target=/opt/couchbase/var \
+--mount type=bind,source=$CONFIG_PATH,target=/root/DIVAN_config/config.json \
+--env ENV=production \
+kushuh/divan:latest
+```
+
+*In Compose file*
+```yaml
+ports:
+  - '8091-8096:8091-8096'
+  - '11210-11211:11210-11211'
+  - '8080:8080'
+```
+
+You can then run a curl request to the following address:
+
+```bash
+curl "http://localhost:8080/divan_status"
+```
+
+It will return the following responses depending on status:
+
+| Response        | Current status                                       |
+| :---            | :---                                                 |
+| No response     | The container is not mounted yet.                    |
+| 503 unavailable | The configuration is running.                        |
+| 500 internal    | Configuration failed (see details in response body). |
+| 200 OK          | Configuration success (server is ready to be used).  |
 
 # License
 2020-2021, A-Novel [Apache 2.0 License](https://github.com/a-novel/divan-docker/blob/master/LICENSE).
